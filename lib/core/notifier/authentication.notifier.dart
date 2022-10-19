@@ -17,12 +17,12 @@ class AuthenticationNotifier extends ChangeNotifier {
     }
   }
 
-  Future<String?> login({
+  Future<String?> LoginView({
     required String Email,
     required String Password,
   }) async {
     try {
-      await _authenticationService.login(Email: Email, Password: Password);
+      await _authenticationService.LoginView(Email: Email, Password: Password);
     } catch (e) {
       print(e);
     }

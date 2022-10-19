@@ -92,6 +92,9 @@ class _SignupState extends State<Signup> {
                   if (email.isNotEmpty && password.isNotEmpty) {
                     await authenticationNotifier.signup(
                         Email: email, Password: password);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Fill the credentials")));
                   }
                 },
                 child: Text('Submit'),

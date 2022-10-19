@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:practice_1/app/providers/routes/app.routes.dart';
+import 'package:provider/provider.dart';
+
+import '../../../core/notifier/authentication.notifier.dart';
 
 class LoginView extends StatefulWidget {
   @override
@@ -23,6 +26,8 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    final AuthenticationNotifier authenticationNotifier =
+        Provider.of<AuthenticationNotifier>(context, listen: false);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -80,7 +85,20 @@ class _LoginViewState extends State<LoginView> {
                 height: 10,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  String name = namecontroller.text;
+                  String email = emailcontroller.text;
+                  String password = passwordcontroller.text;
+                  String Phone = phonecontroller.text;
+
+                  if (email.isNotEmpty && password.isNotEmpty) {
+                    await authenticationNotifier.signup(
+                        Email: email, Password: password);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Fill the credentials")));
+                  }
+                },
                 child: Text('Submit'),
               ),
               TextButton(
