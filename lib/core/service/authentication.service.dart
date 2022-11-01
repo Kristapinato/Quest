@@ -6,6 +6,7 @@ class AuthenticationService {
   Future<String?> signup({
     required String Email,
     required String Password,
+    required String Name,
   }) async {
     GotrueSessionResponse response =
         await SupabaseCredentials.supabaseClient.auth.signUp(Email, Password);
@@ -21,6 +22,7 @@ class AuthenticationService {
   Future<String?> LoginView({
     required String Email,
     required String Password,
+    required String Name,
   }) async {
     GotrueSessionResponse response =
         await SupabaseCredentials.supabaseClient.auth.signIn(

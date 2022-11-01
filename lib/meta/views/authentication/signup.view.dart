@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:practice_1/core/notifier/authentication.notifier.dart';
+import 'package:practice_1/meta/views/authentication/login.view.dart';
 import 'package:provider/provider.dart';
 
 class Signup extends StatefulWidget {
@@ -8,17 +9,18 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+
   TextEditingController namecontroller = TextEditingController();
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
-  TextEditingController phonecontroller = TextEditingController();
 
   @override
   void initState() {
     namecontroller = TextEditingController();
     emailcontroller = TextEditingController();
     passwordcontroller = TextEditingController();
-    phonecontroller = TextEditingController();
+
     super.initState();
   }
 
@@ -32,74 +34,94 @@ class _SignupState extends State<Signup> {
         title: Text('SignUp Page'),
       ),
       body: Container(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            //mainAxisAlignment: MainAxisAlignment.center,
-            //crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              TextField(
-                controller: namecontroller,
-                decoration: InputDecoration(
-                  hintText: 'Your Name : ',
-                  labelText: 'Name',
-                  border: OutlineInputBorder(),
+        child: Form(
+          key: _formkey,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              //mainAxisAlignment: MainAxisAlignment.center,
+              //crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                TextFormField(
+                  controller: namecontroller,
+                  decoration: InputDecoration(
+                    hintText: 'Your Name : ',
+                    labelText: 'Name',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter the name';
+                    }
+                  },
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              TextField(
-                controller: emailcontroller,
-                decoration: InputDecoration(
-                  hintText: 'Your Email : ',
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
+                SizedBox(
+                  height: 10,
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              TextField(
-                controller: passwordcontroller,
-                decoration: InputDecoration(
-                  hintText: 'Your Password : ',
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
+                TextFormField(
+                  controller: emailcontroller,
+                  decoration: InputDecoration(
+                    hintText: 'Your Email : ',
+                    labelText: 'Email',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter the email';
+                    }
+                  },
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              TextField(
-                controller: phonecontroller,
-                decoration: InputDecoration(
-                  hintText: 'Your Phone No. : ',
-                  labelText: 'Phone No.',
-                  border: OutlineInputBorder(),
+                SizedBox(
+                  height: 10,
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  String name = namecontroller.text;
-                  String email = emailcontroller.text;
-                  String password = passwordcontroller.text;
-                  String Phone = phonecontroller.text;
+                TextFormField(
+                  controller: passwordcontroller,
+                  decoration: InputDecoration(
+                    hintText: 'Your Password : ',
+                    labelText: 'Password',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter the password';
+                    }
+                  },
+                  obscureText: true,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (!_formkey.currentState!.validate()) {
+                      return;
+                    }
 
-                  if (email.isNotEmpty && password.isNotEmpty) {
-                    await authenticationNotifier.signup(
-                        Email: email, Password: password);
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Fill the credentials")));
-                  }
-                },
-                child: Text('Submit'),
-              ),
-            ],
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginView()),
+                    );
+                    String name = namecontroller.text;
+                    String email = emailcontroller.text;
+                    String password = passwordcontroller.text;
+
+                    if (email.isNotEmpty &&
+                        password.isNotEmpty &&
+                        name.isNotEmpty) {
+                      await authenticationNotifier.signup(
+                          Email: email, Password: password, Name: name);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Fill the credentials")));
+                    }
+                  },
+                  child: Text('Submit'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

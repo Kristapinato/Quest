@@ -9,9 +9,11 @@ class AuthenticationNotifier extends ChangeNotifier {
   Future<String?> signup({
     required String Email,
     required String Password,
+    required String Name,
   }) async {
     try {
-      await _authenticationService.signup(Email: Email, Password: Password);
+      await _authenticationService.signup(
+          Email: Email, Password: Password, Name: Name);
     } catch (e) {
       print(e);
     }
@@ -20,9 +22,11 @@ class AuthenticationNotifier extends ChangeNotifier {
   Future<String?> LoginView({
     required String Email,
     required String Password,
+    required String Name,
   }) async {
     try {
-      await _authenticationService.LoginView(Email: Email, Password: Password);
+      await _authenticationService.LoginView(
+          Email: Email, Password: Password, Name: Name);
     } catch (e) {
       print(e);
     }
